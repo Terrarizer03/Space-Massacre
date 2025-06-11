@@ -1,9 +1,8 @@
-[gd_scene load_steps=8 format=4 uid="uid://cquhu5krdarw1"]
+[gd_scene load_steps=7 format=4 uid="uid://cquhu5krdarw1"]
 
 [ext_resource type="Script" path="res://Scripts/MainScene.gd" id="1_e7sby"]
 [ext_resource type="PackedScene" uid="uid://cehac684mpxhw" path="res://Scenes/Player.tscn" id="1_gl0cg"]
 [ext_resource type="Texture2D" uid="uid://b67064foqqdcq" path="res://Assets/Tilemap/New Piskel (39).png" id="2_gnpus"]
-[ext_resource type="PackedScene" uid="uid://cul275u1qkfpv" path="res://Scenes/Enemies/TriangleEnemy.tscn" id="3_nyn7t"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6p6pg"]
 texture = ExtResource("2_gnpus")
@@ -3495,6 +3494,3 @@ position = Vector2(576, 324)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_c8gip")
-
-[node name="CharacterBody2D" parent="." instance=ExtResource("3_nyn7t")]
-position = Vector2(101, 71)

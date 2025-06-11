@@ -12,6 +12,7 @@ var triangle_enemy = preload("res://Scenes/Enemies/TriangleEnemy.tscn")
 
 func _ready() -> void:
 	spawn_circle_enemy()
+	spawn_triangle_enemy()
 	wave_function()
 
 func spawn_circle_enemy():
@@ -29,7 +30,18 @@ func spawn_circle_enemy():
 			await get_tree().create_timer(0.1).timeout
 
 func spawn_triangle_enemy():
-	pass
+	while true:
+		if spawning and wave >= 5:
+			spawned_enemies += 1
+			var spawnpos = determineTriangleSpawnPos()
+			
+			var triangle_instance = triangle_enemy.instantiate()
+			triangle_instance.position = spawnpos
+			add_child(triangle_instance)
+			print("TRIANGLE ENEMY SPAWNED ", triangle_instance.position)
+			await get_tree().create_timer(5).timeout  # Spawn triangles less frequently
+		else:
+			await get_tree().create_timer(0.1).timeout
 
 func spawn_square_enemy():
 	pass
@@ -59,6 +71,18 @@ func wave_function():
 	
 	# Start next wave
 	wave_function()
+
+func determineTriangleSpawnPos():
+	var screen_width = 1152
+	var screen_height = 648
+	var margin = 50  # Keep 50 pixels away from edges
+	
+	# Random position within the play area (with margin)
+	var spawn_pos = Vector2()
+	spawn_pos.x = randf_range(margin, screen_width - margin)
+	spawn_pos.y = randf_range(margin, screen_height - margin)
+	
+	return spawn_pos
 
 func determineSpawnPos():
 	var screen_width = 1152

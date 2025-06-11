@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=3 uid="uid://cul275u1qkfpv"]
 
 [ext_resource type="Shader" uid="uid://dm6255ea31qd6" path="res://Shaders/HitFlash.tres" id="1_kuqp4"]
-[ext_resource type="Script" path="res://triangle_enemy.gd" id="1_r4xv1"]
+[ext_resource type="Script" path="res://Scripts/triangle_enemy.gd" id="1_r4xv1"]
 [ext_resource type="Texture2D" uid="uid://ccb7wg57qcjxu" path="res://Assets/Sprites/Enemy Sprites/New Piskel-1.png (13).png" id="2_2tua3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_01f5y"]
