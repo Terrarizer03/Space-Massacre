@@ -1,0 +1,44 @@
+[gd_scene load_steps=8 format=3 uid="uid://bsrwc11r2eor4"]
+
+[ext_resource type="Texture2D" uid="uid://c5cp8bd50d4hl" path="res://Assets/Sprites/New Piskel-1.png (2).png" id="1_xbftg"]
+[ext_resource type="Script" path="res://death_explosion.gd" id="2_vncbk"]
+
+[sub_resource type="Gradient" id="Gradient_4u77e"]
+offsets = PackedFloat32Array(0.444444, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_1qaav"]
+gradient = SubResource("Gradient_4u77e")
+
+[sub_resource type="Curve" id="Curve_rwpbu"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_ytqog"]
+curve = SubResource("Curve_rwpbu")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_q3rpp"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 8.64
+inherit_velocity_ratio = 0.761
+direction = Vector3(0, 0, 0)
+spread = 180.0
+initial_velocity_min = 100.0
+initial_velocity_max = 200.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.2
+scale_max = 0.4
+scale_curve = SubResource("CurveTexture_ytqog")
+color_ramp = SubResource("GradientTexture1D_1qaav")
+
+[node name="GPUParticles2D" type="GPUParticles2D"]
+emitting = false
+amount = 20
+process_material = SubResource("ParticleProcessMaterial_q3rpp")
+texture = ExtResource("1_xbftg")
+one_shot = true
+explosiveness = 1.0
+fixed_fps = 60
+trail_lifetime = 0.1
+script = ExtResource("2_vncbk")

@@ -6,6 +6,7 @@ extends CharacterBody2D
 var SPEED : float
 var attack : float
 var attack_cooldown : float
+var health : float
 
 # preloads -------------
 var bullet := preload("res://Scenes/Bullet.tscn")
@@ -14,13 +15,18 @@ var laser_shoot = preload("res://Assets/Sound/laserShoot.wav")
 # variables -------------
 var is_dashing = false
 var shoot_ready = true
+var speed_up = false
 var bullet_scale = 1
+var iframes = false
+var attackmult := 2
+var speedmult := 1.5
 
 # Exports -------------
 @export var MAX_SPEED = 450.0
 @export var friction = 0.1
 @export var NORM_ATTACK = 1.0
 @export var ATTACK_SPEED = 0.15
+@export var max_health = 5.0
 
 # On Ready -------------
 @onready var screen_size = get_viewport_rect()
@@ -30,12 +36,13 @@ func _ready() -> void:
 	SPEED = MAX_SPEED
 	attack = NORM_ATTACK
 	attack_cooldown = ATTACK_SPEED
+	health = max_health
 	
 func _physics_process(delta: float) -> void:
 	screen_wrap()
 	# MOVEMENT ----------
 	var direction = Vector2(Input.get_axis("key_left", "key_right"), Input.get_axis("key_up", "key_down"))
-	var effective_speed = MAX_SPEED * 1
+	var effective_speed = MAX_SPEED * (speedmult if speed_up else 1)
 	
 	if direction != Vector2.ZERO and not is_dashing:
 		velocity = velocity.lerp(direction * effective_speed, 0.1)
@@ -69,5 +76,37 @@ func fire():
 		await get_tree().create_timer(attack_cooldown).timeout
 		shoot_ready = true
 		# -----------
+		
+func damage(attack_damage,pos):
+	if iframes == false:
+		var push_direction = (position - pos).normalized()
+		velocity = push_direction * SPEED * 2
+		health -= attack_damage
+		$HitSound.play()
+		# Iframes(0.5)
+		if health <= 0:
+			print("OH NO U SUCK FUCK URSELF")
 
-	# ================
+# Power Ups ==================
+func strength_power_up():
+	$PickupCoin.play()
+	attack = NORM_ATTACK * attackmult
+	await get_tree().create_timer(10).timeout
+	$PowerDown.play()
+	attack = NORM_ATTACK
+
+func speed_power_up():
+	$PickupCoin.play()
+	speed_up = true
+	await get_tree().create_timer(10).timeout
+	$PowerDown.play()
+	speed_up = false
+
+func attack_speed_power_up():
+	$PickupCoin.play()
+	var previous_attack_cooldown = attack_cooldown
+	attack_cooldown /= 2
+	await get_tree().create_timer(10).timeout
+	$PowerDown.play()
+	attack_cooldown = previous_attack_cooldown
+# ================

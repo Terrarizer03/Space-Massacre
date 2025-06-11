@@ -1,8 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://cehac684mpxhw"]
+[gd_scene load_steps=8 format=3 uid="uid://cehac684mpxhw"]
 
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_evmrx"]
 [ext_resource type="Texture2D" uid="uid://dpop7toine34y" path="res://Assets/Sprites/Playersprite.png" id="1_k0xg1"]
 [ext_resource type="AudioStream" uid="uid://ckrtl225vke6t" path="res://Assets/Sound/laserShoot (1).wav" id="3_p1ru0"]
+[ext_resource type="AudioStream" uid="uid://dnk5wlqke5drs" path="res://Assets/Sound/hitHurt (1).wav" id="4_56jkx"]
+[ext_resource type="AudioStream" uid="uid://c0w1ft4dterht" path="res://Assets/Sound/pickupCoin.wav" id="5_7n5jt"]
+[ext_resource type="AudioStream" uid="uid://b3avfamyjn0e6" path="res://Assets/Sound/powerDown.wav" id="6_ceafp"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_t04ej"]
 radius = 71.1758
@@ -25,3 +28,12 @@ position = Vector2(270, 0)
 [node name="LaserShoot" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_p1ru0")
 volume_db = -10.0
+
+[node name="HitSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_56jkx")
+
+[node name="PickupCoin" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_7n5jt")
+
+[node name="PowerDown" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_ceafp")

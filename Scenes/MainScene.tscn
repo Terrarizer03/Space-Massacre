@@ -1,5 +1,6 @@
-[gd_scene load_steps=6 format=4 uid="uid://cquhu5krdarw1"]
+[gd_scene load_steps=7 format=4 uid="uid://cquhu5krdarw1"]
 
+[ext_resource type="Script" path="res://Scenes/MainScene.gd" id="1_e7sby"]
 [ext_resource type="PackedScene" uid="uid://cehac684mpxhw" path="res://Scenes/Player.tscn" id="1_gl0cg"]
 [ext_resource type="Texture2D" uid="uid://b67064foqqdcq" path="res://Assets/Tilemap/New Piskel (39).png" id="2_gnpus"]
 
@@ -3478,6 +3479,7 @@ glow_hdr_luminance_cap = 1.22
 adjustment_enabled = true
 
 [node name="Node2D" type="Node2D"]
+script = ExtResource("1_e7sby")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
 position = Vector2(567, 320)

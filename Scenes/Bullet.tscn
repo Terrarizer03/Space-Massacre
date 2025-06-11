@@ -12,6 +12,8 @@ size = Vector2(160, 80)
 [node name="Bullet" type="CharacterBody2D" groups=["Bullet", "DamageType"]]
 scale = Vector2(0.15, 0.113)
 disable_mode = 2
+collision_layer = 7
+collision_mask = 7
 motion_mode = 1
 platform_on_leave = 2
 script = ExtResource("1_p01sk")
@@ -32,3 +34,4 @@ shape = SubResource("RectangleShape2D_m3v6g")
 
 [connection signal="screen_entered" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_entered"]
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

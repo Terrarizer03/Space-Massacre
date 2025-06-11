@@ -1,0 +1,81 @@
+[gd_scene load_steps=10 format=3 uid="uid://dtypb2q2664m7"]
+
+[ext_resource type="Script" path="res://enemy.gd" id="1_yj4a7"]
+[ext_resource type="Texture2D" uid="uid://vua6pdnuda6l" path="res://Assets/Sprites/Circle-2.png-1.png.png" id="2_jsbvi"]
+[ext_resource type="Shader" uid="uid://dm6255ea31qd6" path="res://Shaders/HitFlash.tres" id="2_m4vbj"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_qkmjf"]
+radius = 21.0238
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_oonbh"]
+resource_local_to_scene = true
+shader = ExtResource("2_m4vbj")
+shader_parameter/enabled = false
+shader_parameter/tint = Color(1, 1, 1, 1)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_botne"]
+radius = 30.0832
+
+[sub_resource type="Animation" id="Animation_msqpx"]
+resource_name = "hit_flash"
+length = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:material:shader_parameter/enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0333333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="Animation" id="Animation_mqqlo"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:material:shader_parameter/enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_82yaj"]
+_data = {
+"RESET": SubResource("Animation_mqqlo"),
+"hit_flash": SubResource("Animation_msqpx")
+}
+
+[node name="Enemy" type="CharacterBody2D" groups=["Enemy"]]
+script = ExtResource("1_yj4a7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_qkmjf")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_oonbh")
+scale = Vector2(0.359, 0.359)
+texture = ExtResource("2_jsbvi")
+
+[node name="DamageHitbox" type="Area2D" parent="."]
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DamageHitbox"]
+shape = SubResource("CircleShape2D_botne")
+debug_color = Color(0.999866, 0, 0.0982801, 0.42)
+
+[node name="HitFlashAnimation" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_82yaj")
+}
+
+[connection signal="body_entered" from="DamageHitbox" to="." method="_on_damage_hitbox_body_entered"]
+[connection signal="body_exited" from="DamageHitbox" to="." method="_on_damage_hitbox_body_exited"]
