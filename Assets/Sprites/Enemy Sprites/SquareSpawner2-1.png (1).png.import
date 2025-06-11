@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://vua6pdnuda6l"
-path="res://.godot/imported/Circle-2.png-1.png.png-abf1c7b7d5f4bb920c4e22d49c640f6b.ctex"
+uid="uid://btsabq75s5pei"
+path="res://.godot/imported/SquareSpawner2-1.png (1).png-21a952964314a7e7aaaae530cfa33a8a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/Circle-2.png-1.png.png"
-dest_files=["res://.godot/imported/Circle-2.png-1.png.png-abf1c7b7d5f4bb920c4e22d49c640f6b.ctex"]
+source_file="res://Assets/Sprites/Enemy Sprites/SquareSpawner2-1.png (1).png"
+dest_files=["res://.godot/imported/SquareSpawner2-1.png (1).png-21a952964314a7e7aaaae530cfa33a8a.ctex"]
 
 [params]
 

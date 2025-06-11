@@ -1,0 +1,87 @@
+[gd_scene load_steps=10 format=3 uid="uid://cul275u1qkfpv"]
+
+[ext_resource type="Shader" uid="uid://dm6255ea31qd6" path="res://Shaders/HitFlash.tres" id="1_kuqp4"]
+[ext_resource type="Script" path="res://triangle_enemy.gd" id="1_r4xv1"]
+[ext_resource type="Texture2D" uid="uid://ccb7wg57qcjxu" path="res://Assets/Sprites/Enemy Sprites/New Piskel-1.png (13).png" id="2_2tua3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_01f5y"]
+size = Vector2(46, 44)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_q8btu"]
+shader = ExtResource("1_kuqp4")
+shader_parameter/enabled = false
+shader_parameter/tint = Color(1, 1, 1, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lxlnv"]
+size = Vector2(50, 48)
+
+[sub_resource type="Animation" id="Animation_4c4el"]
+resource_name = "HitEffect"
+length = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:material:shader_parameter/enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0333333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="Animation" id="Animation_2rlac"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:material:shader_parameter/enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_l37x8"]
+_data = {
+"HitEffect": SubResource("Animation_4c4el"),
+"RESET": SubResource("Animation_2rlac")
+}
+
+[node name="CharacterBody2D" type="CharacterBody2D"]
+script = ExtResource("1_r4xv1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+shape = SubResource("RectangleShape2D_01f5y")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_q8btu")
+rotation = 1.5708
+scale = Vector2(0.359, 0.359)
+texture = ExtResource("2_2tua3")
+
+[node name="DamageHitbox" type="Area2D" parent="."]
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DamageHitbox"]
+shape = SubResource("RectangleShape2D_lxlnv")
+debug_color = Color(1, 0, 0, 0.419608)
+
+[node name="Node2D" type="Node2D" parent="."]
+position = Vector2(48, 0)
+
+[node name="FireTimer" type="Timer" parent="."]
+wait_time = 0.5
+
+[node name="HitEffect" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_l37x8")
+}
+
+[connection signal="body_entered" from="DamageHitbox" to="." method="_on_damage_hitbox_body_entered"]
+[connection signal="timeout" from="FireTimer" to="." method="_on_fire_timer_timeout"]

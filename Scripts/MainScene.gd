@@ -7,7 +7,8 @@ var spawning = true
 var spawned_enemies = 0
 
 # preloads ------------
-var circle_enemy = preload("res://Scenes/enemy.tscn")
+var circle_enemy = preload("res://Scenes/Enemies/CircleEnemy.tscn")
+var triangle_enemy = preload("res://Scenes/Enemies/TriangleEnemy.tscn")
 
 func _ready() -> void:
 	spawn_circle_enemy()
@@ -27,6 +28,12 @@ func spawn_circle_enemy():
 		else:
 			await get_tree().create_timer(0.1).timeout
 
+func spawn_triangle_enemy():
+	pass
+
+func spawn_square_enemy():
+	pass
+
 func wave_function():
 	wave += 1
 	spawning = true
@@ -40,6 +47,9 @@ func wave_function():
 	# Wait for spawn duration
 	await get_tree().create_timer(spawn_duration).timeout
 	spawning = false
+	
+	while get_tree().get_nodes_in_group("Enemy").size() > 0:
+		await get_tree().process_frame
 	
 	print("WAVE ", wave, " ENDED - Enemies spawned: ", spawned_enemies)
 	

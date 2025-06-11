@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://bsrwc11r2eor4"]
 
 [ext_resource type="Texture2D" uid="uid://c5cp8bd50d4hl" path="res://Assets/Sprites/New Piskel-1.png (2).png" id="1_xbftg"]
-[ext_resource type="Script" path="res://death_explosion.gd" id="2_vncbk"]
+[ext_resource type="Script" path="res://Scripts/death_explosion.gd" id="2_vncbk"]
 
 [sub_resource type="Gradient" id="Gradient_4u77e"]
 offsets = PackedFloat32Array(0.444444, 1)

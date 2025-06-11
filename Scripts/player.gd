@@ -64,11 +64,13 @@ func fire():
 	if shoot_ready:
 		shoot_ready = false
 		var bul_instance = bullet.instantiate()
+		bul_instance.shooter = self
 		bul_instance.dir = rotation
 		bul_instance.pos = $Node2D.global_position
 		bul_instance.rota = global_rotation
 		bul_instance.att = attack
 		bul_instance.scale *= bullet_scale
+		bul_instance.speed = 1500
 		get_parent().add_child(bul_instance)
 		$LaserShoot.play()
 		# COOLDOWN
@@ -83,9 +85,15 @@ func damage(attack_damage,pos):
 		velocity = push_direction * SPEED * 2
 		health -= attack_damage
 		$HitSound.play()
-		# Iframes(0.5)
+		Iframes(0.5)
 		if health <= 0:
 			print("OH NO U SUCK FUCK URSELF")
+			
+func Iframes(time):
+	iframes = true
+	$PlayerAnimations.play("Hit")
+	await get_tree().create_timer(0.5).timeout
+	iframes = false
 
 # Power Ups ==================
 func strength_power_up():
@@ -105,7 +113,7 @@ func speed_power_up():
 func attack_speed_power_up():
 	$PickupCoin.play()
 	var previous_attack_cooldown = attack_cooldown
-	attack_cooldown /= 2
+	attack_cooldown /= 1.5
 	await get_tree().create_timer(10).timeout
 	$PowerDown.play()
 	attack_cooldown = previous_attack_cooldown

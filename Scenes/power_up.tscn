@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://d4eacxmkqi6oq"]
 
-[ext_resource type="Script" path="res://star_powerup.gd" id="1_21146"]
+[ext_resource type="Script" path="res://Scripts/star_powerup.gd" id="1_21146"]
 [ext_resource type="Texture2D" uid="uid://cluhj4rwgbpvg" path="res://Assets/Sprites/New Piskel (40).png" id="2_tngcf"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o21tp"]

@@ -5,10 +5,11 @@ extends CharacterBody2D
 var pos: Vector2
 var rota: float
 var dir: float
-var speed = 1500
+var speed: float
 var att : float
 var camera = null
 var outofbounds = false
+var shooter: Node2D  
 @onready var area = $Area2D
 # ================
 
@@ -22,8 +23,14 @@ func _physics_process(_delta: float) -> void:
 	move_and_slide()
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
+	if body == shooter:
+		return
+	
 	if body.has_method("damage") and not body.is_in_group("Player"):
 		body.damage(att, self)
+		death()
+	else:
+		body.damage(att, position)
 		death()
 
 func death():
@@ -33,6 +40,11 @@ func death():
 		_particle.position = global_position
 		_particle.rotation = rotation + deg_to_rad(180)
 		_particle.amount = randi_range(3,10)
+		# Set particle color based on who shot the bullet
+		if shooter and shooter.is_in_group("Player"):
+			_particle.modulate = Color.WHITE
+		else:
+			_particle.modulate = Color.GREEN
 		_particle.scale = Vector2(0.7,0.7)
 		_particle.emitting = true
 		get_tree().current_scene.add_child(_particle)
@@ -41,7 +53,6 @@ func death():
 func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
 	outofbounds = true
 	await get_tree().create_timer(0.25).timeout
-	print("Out of Bounds")
 	queue_free()
 	
 func _on_visible_on_screen_notifier_2d_screen_entered() -> void:
