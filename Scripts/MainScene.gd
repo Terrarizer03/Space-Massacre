@@ -7,6 +7,7 @@ var spawning = true
 var spawned_enemies = 0
 
 # preloads ------------
+var dialogue_scene = preload("res://Dialogue/dialogue.tscn")
 var circle_enemy = preload("res://Scenes/Enemies/CircleEnemy.tscn")
 var triangle_enemy = preload("res://Scenes/Enemies/TriangleEnemy.tscn")
 var square_enemy = preload("res://Scenes/Enemies/SquareEnemy.tscn")
@@ -17,13 +18,7 @@ var square_enemy = preload("res://Scenes/Enemies/SquareEnemy.tscn")
 @onready var Player = $Player
 
 func _ready() -> void:
-	heartcontainer.setMaxHearts(Player.max_health)
-	heartcontainer.updateHearts(Player.health)
-	Player.healthChanged.connect(heartcontainer.updateHearts)
-	spawn_square_enemy()
-	spawn_circle_enemy()
-	spawn_triangle_enemy()
-	wave_function()
+	gameStart()
 
 func spawn_circle_enemy():
 	while true:
@@ -68,6 +63,8 @@ func spawn_square_enemy():
 			await get_tree().create_timer(0.1).timeout
 
 func wave_function():
+	if wave >= 1:
+		$WaveEndSound.play()
 	wave += 1
 	spawning = true
 	spawned_enemies = 0
@@ -154,3 +151,24 @@ func determineSquareSpawnPos():
 			spawn_pos.y = screen_height + spawn_margin
 	
 	return spawn_pos
+
+func gameStart():
+	# Instantiate and show dialogue
+	var dialogue_instance = dialogue_scene.instantiate()
+	add_child(dialogue_instance)
+	
+	# Wait for dialogue to finish (it will queue_free itself when done)
+	while dialogue_instance != null and is_instance_valid(dialogue_instance):
+		await get_tree().process_frame
+	
+	# Small delay after dialogue ends
+	await get_tree().create_timer(2).timeout
+	
+	# Now start the game
+	heartcontainer.setMaxHearts(Player.max_health)
+	heartcontainer.updateHearts(Player.health)
+	Player.healthChanged.connect(heartcontainer.updateHearts)
+	spawn_square_enemy()
+	spawn_circle_enemy()
+	spawn_triangle_enemy()
+	wave_function()

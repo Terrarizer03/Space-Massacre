@@ -16,7 +16,6 @@ var bullet := preload("res://Scenes/Bullet.tscn")
 var laser_shoot = preload("res://Assets/Sound/laserShoot.wav")
 
 # variables -------------
-var is_dashing = false
 var shoot_ready = true
 var speed_up = false
 var atk_speed_up = false
@@ -25,6 +24,12 @@ var bullet_scale = 1
 var iframes = false
 var attackmult := 2
 var speedmult := 1.5
+var is_dashing = false
+var can_dash = true
+var dash_speed = 1000.0
+var dash_duration = 0.2
+var dash_cooldown = 0.5
+
 
 # Exports -------------
 @export var MAX_SPEED = 450.0
@@ -35,6 +40,8 @@ var speedmult := 1.5
 
 # On Ready -------------
 @onready var screen_size = get_viewport_rect()
+@onready var PlayerSprite = $Sprite2D
+
 # ==================
 
 func _ready() -> void:
@@ -58,6 +65,9 @@ func _physics_process(delta: float) -> void:
 	look_at(get_global_mouse_position())
 	if Input.is_action_pressed("attack"):
 		fire()
+	
+	if Input.is_action_just_pressed("dash"):
+		dash()
 	
 	move_and_slide()
 
@@ -102,6 +112,58 @@ func Iframes(time):
 	$PlayerAnimations.play("Hit")
 	await get_tree().create_timer(0.5).timeout
 	iframes = false
+
+func create_dash_trail():
+	var ghost = Sprite2D.new()
+	ghost.texture = PlayerSprite.texture  
+	ghost.global_position = global_position  
+	ghost.global_rotation = global_rotation + deg_to_rad(90) 
+	ghost.scale = scale * 2.5
+	ghost.modulate = Color(1, 1, 1, 0.5)  
+	
+	get_parent().add_child(ghost)  # Add to the scene
+	
+	# Tween to fade out and remove the ghost
+	var tween = get_tree().create_tween()
+	tween.tween_property(ghost, "modulate:a", 0, 0.3)  # Fade out in 0.3s
+	await tween.finished
+	ghost.queue_free()  # Delete after fading out
+# ------------------------------------ #
+
+func dash():
+	if is_dashing or not can_dash:
+		return  # Prevent multiple dashes at once
+
+	can_dash = false
+	is_dashing = true
+	iframes = true # Optional: Make the player invincible during dash
+	PlayerSprite.self_modulate.a8 = 100
+	set_collision_layer_value(1, false)
+	set_collision_mask_value(1, false)
+	set_collision_layer_value(2, false)
+	set_collision_mask_value(2, false)
+
+	var dash_direction = velocity.normalized()
+	if dash_direction == Vector2.ZERO:
+		dash_direction = Vector2.RIGHT.rotated(rotation)  # Default to facing direction if not moving
+
+	velocity = dash_direction * dash_speed
+	var trail_timer = dash_duration / 5  # Adjust this for smoother trails
+	for i in range(5):  # Create 5 ghost images
+		create_dash_trail()
+		await get_tree().create_timer(trail_timer).timeout  # Small delay
+	
+	PlayerSprite.self_modulate.a8 = 255
+	set_collision_layer_value(1, true)
+	set_collision_mask_value(1, true)
+	set_collision_layer_value(2, true)
+	set_collision_mask_value(2, true)
+	is_dashing = false
+	iframes = false  # Remove invincibility
+	velocity = Vector2.ZERO  # Stop the dash
+	await get_tree().create_timer(dash_cooldown).timeout
+	
+	can_dash = true  # Reset cooldown
 
 # Power Ups ==================
 func strength_power_up():

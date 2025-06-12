@@ -28,7 +28,7 @@ var damaging_cooldown = 0
 # ===============================
 
 func _ready() -> void:
-	health = randi_range(3, 5)
+	health = randi_range(2, 3)
 	bullet_amount = MAX_BULLETS
 	scale = Vector2(0.1, 0.1)
 	tween.tween_property(self, "scale", final_scale, 1.0).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)

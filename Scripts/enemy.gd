@@ -56,7 +56,6 @@ func damage(attack_damage, bullet):
 	if health <= 0:
 		spawnPowerUp()
 		death(bullet)
-		queue_free() 
 
 func _on_damage_hitbox_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player"):

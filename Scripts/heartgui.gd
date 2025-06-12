@@ -13,8 +13,8 @@ func update(whole: bool):
 	var is_last_heart = parent_container.get_child(-1) == self
 	
 	if is_last_heart:
-		if whole: sprite.frame = 3  # Last heart, full
-		else: sprite.frame = 1      # Last heart, empty
+		if whole: sprite.frame = 2  # Last heart, full
+		else: sprite.frame = 3      # Last heart, empty
 	else:
 		if whole: sprite.frame = 0  # Regular heart, full
-		else: sprite.frame = 2      # Regular heart, empty
+		else: sprite.frame = 1      # Regular heart, empty
