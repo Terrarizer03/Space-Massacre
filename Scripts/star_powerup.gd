@@ -5,7 +5,8 @@ extends Area2D
 var power_ups = {
 	"Strength": "strength_power_up",
 	"Speed": "speed_power_up",
-	"AttackSpeed": "attack_speed_power_up"
+	"AttackSpeed": "attack_speed_power_up",
+	"Health": "health_power_up"
 }
 var current_power_up = null
 
@@ -18,7 +19,7 @@ func _ready() -> void:
 	current_power_up = determinePowerUp()
 	
 func determinePowerUp():
-	var randomPowerUp = randi_range(1, 3)
+	var randomPowerUp = randi_range(1, 4)
 	
 	if randomPowerUp == 1:
 		sprite.modulate = Color8(255, 0, 0)
@@ -26,9 +27,12 @@ func determinePowerUp():
 	elif randomPowerUp == 2:
 		sprite.modulate = Color8(255, 255, 0)
 		return power_ups["AttackSpeed"]
-	else:
+	elif randomPowerUp == 3:
 		sprite.modulate = Color8(0, 200, 255)
 		return power_ups["Speed"]
+	else:
+		sprite.modulate = Color8(255, 148, 135)
+		return power_ups["Health"]
 
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player"):

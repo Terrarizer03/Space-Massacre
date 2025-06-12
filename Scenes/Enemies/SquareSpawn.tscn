@@ -1,0 +1,79 @@
+[gd_scene load_steps=10 format=3 uid="uid://c8qdacvi6rokw"]
+
+[ext_resource type="Texture2D" uid="uid://btsabq75s5pei" path="res://Assets/Sprites/Enemy Sprites/SquareSpawner2-1.png (1).png" id="1_602tt"]
+[ext_resource type="Script" path="res://Scripts/square_spawn.gd" id="1_hvf62"]
+[ext_resource type="Shader" uid="uid://dm6255ea31qd6" path="res://Shaders/HitFlash.tres" id="2_3unq5"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_s6pgj"]
+radius = 25.9615
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3jshm"]
+resource_local_to_scene = true
+shader = ExtResource("2_3unq5")
+shader_parameter/enabled = false
+shader_parameter/tint = Color(1, 1, 1, 1)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xkwc8"]
+radius = 30.8707
+
+[sub_resource type="Animation" id="Animation_57rlk"]
+resource_name = "HitFlash"
+length = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:material:shader_parameter/enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0333333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="Animation" id="Animation_6kop3"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:material:shader_parameter/enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_gcsit"]
+_data = {
+"HitFlash": SubResource("Animation_57rlk"),
+"RESET": SubResource("Animation_6kop3")
+}
+
+[node name="SquareSpawn" type="CharacterBody2D" groups=["Enemy"]]
+script = ExtResource("1_hvf62")
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_s6pgj")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_3jshm")
+scale = Vector2(0.359, 0.359)
+texture = ExtResource("1_602tt")
+
+[node name="DamageHitbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DamageHitbox"]
+shape = SubResource("CircleShape2D_xkwc8")
+debug_color = Color(1, 0, 0, 0)
+
+[node name="HitEffect" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_gcsit")
+}
+
+[connection signal="body_entered" from="DamageHitbox" to="." method="_on_damage_hitbox_body_entered"]
+[connection signal="body_exited" from="DamageHitbox" to="." method="_on_damage_hitbox_body_exited"]

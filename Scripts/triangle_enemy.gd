@@ -6,7 +6,6 @@ extends CharacterBody2D
 @export var DAMAGING_COOLDOWN = 0.5
 @export var speed := 1000.0
 
-@onready var white_sprite = $Sprite2D/White
 @onready var player = $"../Player"
 @onready var tween = get_tree().create_tween()
 # ===============================
@@ -29,6 +28,7 @@ var damaging_cooldown = 0
 # ===============================
 
 func _ready() -> void:
+	health = randi_range(3, 5)
 	bullet_amount = MAX_BULLETS
 	scale = Vector2(0.1, 0.1)
 	tween.tween_property(self, "scale", final_scale, 1.0).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
@@ -60,9 +60,8 @@ func damage(attack_damage, bullet):
 	if health <= 0:
 		if main_scene:
 			main_scene.points += 3
-		instan()
+		spawnPowerUp()
 		death()
-		queue_free() 
 
 func _on_damage_hitbox_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player") and body.has_method("damage") and damaging_cooldown <= 0:
@@ -76,6 +75,7 @@ func fire():
 	var rand_scale = randf_range(0.075, 0.125)
 	var bul_instance = bullet.instantiate()
 	bul_instance.shooter = self
+	bul_instance.is_player_bullet = self.is_in_group("Enemy")
 	bul_instance.modulate = Color8(0, 255, 0)
 	bul_instance.dir = rotation
 	bul_instance.pos = $Node2D.global_position
@@ -93,7 +93,7 @@ func _on_fire_timer_timeout() -> void:
 		has_bullets = false
 		$FireTimer.stop()
 		
-func instan():
+func spawnPowerUp():
 	var Pow_Up = PowerUp.instantiate()
 	var rand1 = randi_range(1, 15)
 

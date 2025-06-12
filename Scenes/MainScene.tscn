@@ -1,8 +1,10 @@
-[gd_scene load_steps=7 format=4 uid="uid://cquhu5krdarw1"]
+[gd_scene load_steps=9 format=4 uid="uid://cquhu5krdarw1"]
 
 [ext_resource type="Script" path="res://Scripts/MainScene.gd" id="1_e7sby"]
 [ext_resource type="PackedScene" uid="uid://cehac684mpxhw" path="res://Scenes/Player.tscn" id="1_gl0cg"]
 [ext_resource type="Texture2D" uid="uid://b67064foqqdcq" path="res://Assets/Tilemap/New Piskel (39).png" id="2_gnpus"]
+[ext_resource type="PackedScene" uid="uid://bnw5mtw5624t5" path="res://Scenes/PlayerHealth/healthContainer.tscn" id="4_tq640"]
+[ext_resource type="FontFile" uid="uid://bqsnnjxx5gsot" path="res://Assets/Fonts/Tiny5/Tiny5-Regular.ttf" id="5_0x3xc"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6p6pg"]
 texture = ExtResource("2_gnpus")
@@ -3494,3 +3496,23 @@ position = Vector2(576, 324)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_c8gip")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HBoxContainer" parent="CanvasLayer" instance=ExtResource("4_tq640")]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 9.0
+offset_top = -35.0
+offset_right = 185.0
+offset_bottom = 5.0
+grow_vertical = 0
+
+[node name="WaveIndicator" type="Label" parent="CanvasLayer"]
+offset_left = 14.0
+offset_top = 586.0
+offset_right = 169.0
+offset_bottom = 609.0
+theme_override_fonts/font = ExtResource("5_0x3xc")
+text = "Wave 1 "

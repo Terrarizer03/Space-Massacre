@@ -8,6 +8,7 @@
 size = Vector2(46, 44)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_q8btu"]
+resource_local_to_scene = true
 shader = ExtResource("1_kuqp4")
 shader_parameter/enabled = false
 shader_parameter/tint = Color(1, 1, 1, 1)

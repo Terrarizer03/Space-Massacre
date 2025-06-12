@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://dc3a2lgl1hhnr"]
+
+[ext_resource type="Texture2D" uid="uid://cgugq8ngr8oh4" path="res://Assets/Sprites/New Piskel (48).png" id="1_vt3b8"]
+[ext_resource type="Script" path="res://Scripts/heartgui.gd" id="1_y8gbq"]
+
+[node name="Panel" type="Panel"]
+self_modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(32, 35)
+offset_right = 32.0
+offset_bottom = 25.0
+script = ExtResource("1_y8gbq")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(16, 13)
+texture = ExtResource("1_vt3b8")
+hframes = 2
+vframes = 2
+frame = 1

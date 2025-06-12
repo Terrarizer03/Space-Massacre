@@ -2,6 +2,9 @@ extends CharacterBody2D
 
 # INITIALIZE
 # ==================
+# signals -------------
+signal healthChanged
+
 # unresolved -------------
 var SPEED : float
 var attack : float
@@ -16,6 +19,8 @@ var laser_shoot = preload("res://Assets/Sound/laserShoot.wav")
 var is_dashing = false
 var shoot_ready = true
 var speed_up = false
+var atk_speed_up = false
+var atk_up = false
 var bullet_scale = 1
 var iframes = false
 var attackmult := 2
@@ -65,6 +70,7 @@ func fire():
 		shoot_ready = false
 		var bul_instance = bullet.instantiate()
 		bul_instance.shooter = self
+		bul_instance.is_player_bullet = self.is_in_group("Player")
 		bul_instance.dir = rotation
 		bul_instance.pos = $Node2D.global_position
 		bul_instance.rota = global_rotation
@@ -84,10 +90,12 @@ func damage(attack_damage,pos):
 		var push_direction = (position - pos).normalized()
 		velocity = push_direction * SPEED * 2
 		health -= attack_damage
+		healthChanged.emit(health)
 		$HitSound.play()
 		Iframes(0.5)
 		if health <= 0:
-			print("OH NO U SUCK FUCK URSELF")
+			health = max_health
+			healthChanged.emit(health)
 			
 func Iframes(time):
 	iframes = true
@@ -98,10 +106,15 @@ func Iframes(time):
 # Power Ups ==================
 func strength_power_up():
 	$PickupCoin.play()
-	attack = NORM_ATTACK * attackmult
-	await get_tree().create_timer(10).timeout
-	$PowerDown.play()
-	attack = NORM_ATTACK
+	if atk_up:
+		return
+	else:
+		atk_up = true
+		attack = NORM_ATTACK * attackmult
+		await get_tree().create_timer(10).timeout
+		$PowerDown.play()
+		attack = NORM_ATTACK
+		atk_up = false
 
 func speed_power_up():
 	$PickupCoin.play()
@@ -112,9 +125,22 @@ func speed_power_up():
 
 func attack_speed_power_up():
 	$PickupCoin.play()
-	var previous_attack_cooldown = attack_cooldown
-	attack_cooldown /= 1.5
-	await get_tree().create_timer(10).timeout
-	$PowerDown.play()
-	attack_cooldown = previous_attack_cooldown
+	if atk_speed_up:
+		return
+	else:
+		atk_speed_up = true
+		var previous_attack_cooldown = attack_cooldown
+		attack_cooldown /= 1.5
+		await get_tree().create_timer(10).timeout
+		$PowerDown.play()
+		attack_cooldown = previous_attack_cooldown
+		atk_speed_up = false
+
+func health_power_up():
+	$PickupCoin.play()
+	if health == max_health:
+		return
+	else:
+		health += 1
+		healthChanged.emit(health)
 # ================

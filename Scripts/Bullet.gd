@@ -9,6 +9,7 @@ var speed: float
 var att : float
 var camera = null
 var outofbounds = false
+var is_player_bullet = false
 var shooter: Node2D  
 @onready var area = $Area2D
 # ================
@@ -37,14 +38,14 @@ func death():
 	if outofbounds == false:
 		var deathParticle = preload("res://Scenes/bulletexplosion particles.tscn")
 		var _particle = deathParticle.instantiate()
-		_particle.position = global_position
-		_particle.rotation = rotation + deg_to_rad(180)
-		_particle.amount = randi_range(3,10)
-		# Set particle color based on who shot the bullet
-		if shooter and shooter.is_in_group("Player"):
+		# Use stored boolean instead of checking freed node
+		if is_player_bullet:
 			_particle.modulate = Color.WHITE
 		else:
 			_particle.modulate = Color.GREEN
+		_particle.position = global_position
+		_particle.rotation = rotation + deg_to_rad(180)
+		_particle.amount = randi_range(3,10)
 		_particle.scale = Vector2(0.7,0.7)
 		_particle.emitting = true
 		get_tree().current_scene.add_child(_particle)
