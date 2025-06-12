@@ -58,7 +58,7 @@ func spawn_square_enemy():
 			square_instance.position = spawnpos
 			add_child(square_instance)
 			print("ENEMY SPAWNED ", square_instance.position)
-			await get_tree().create_timer(10).timeout
+			await get_tree().create_timer(20).timeout
 		else:
 			await get_tree().create_timer(0.1).timeout
 

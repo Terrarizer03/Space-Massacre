@@ -49,3 +49,4 @@ text = "Space to Continue..."
 
 [node name="DialogueSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_homh3")
+volume_db = -2.5
