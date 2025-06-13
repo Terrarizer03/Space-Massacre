@@ -3,6 +3,7 @@ extends Node2D
 # INIT =============
 # signal ------------
 signal sendScore
+signal cameraShake
 
 # variables -------------
 var wave = 0
@@ -190,6 +191,7 @@ func dialogueStart():
 	wave_function()
 
 func scoreChange(points: int):
+	cameraShake.emit()
 	score += points
 	if game_start:
 		score_indicator.text = "Score: " + str(score)

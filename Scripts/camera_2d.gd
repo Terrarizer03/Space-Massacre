@@ -1,13 +1,32 @@
 extends Camera2D
 
+# INIT =============
+# On Ready ------------
 @onready var player = $"../Player"
+@onready var main_scene = $"../../Node2D"
+
+# export ----------
 @export var death_zoom_level: float = 1.5
 @export var zoom_duration: float = 1.1
+
+#variables ---------
+var max_shake: float = 5.0
+var shake_fade : float = 10.0
+var _shake_strength: float = 0.0
 
 func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	if player and player.has_signal("cameraZoom"):
 		player.connect("cameraZoom", _on_camera_zoom)
+	main_scene.cameraShake.connect(camera_Shake)
+		
+func camera_Shake():
+	_shake_strength = max_shake
+	
+func _process(delta: float) -> void:
+	if _shake_strength > 0:
+		_shake_strength = lerp(_shake_strength, 0.0, shake_fade * delta)
+		offset = Vector2(randf_range(-_shake_strength, _shake_strength), randf_range(-_shake_strength, _shake_strength))
 
 func _on_camera_zoom():
 	# Move camera to player position AND zoom in simultaneously

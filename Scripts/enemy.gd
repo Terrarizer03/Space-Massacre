@@ -5,7 +5,6 @@ extends CharacterBody2D
 signal Enemydeath
 
 # preloads ---------------
-var deathParticle = preload("res://Scenes/death_explosion.tscn")
 var explosion = preload("res://Assets/Sound/explosion (1).wav")
 var PowerUp = preload("res://Scenes/power_up.tscn")
 
@@ -55,7 +54,6 @@ func _physics_process(_delta: float) -> void:
 func damage(attack_damage, bullet):
 	health -= attack_damage
 	hit_flash.play("hit_flash")
-	var main_scene = get_tree().get_first_node_in_group("MainScene")
 	if health <= 0:
 		Enemydeath.emit()
 		spawnPowerUp()

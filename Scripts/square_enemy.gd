@@ -46,7 +46,6 @@ func _ready() -> void:
 	scale = Vector2(size_scale, size_scale)
 	health = floor(MAX_HEALTH * 1.3 * size_scale)
 	highest_health = health
-	print(highest_health)
 	
 	var rand = randi_range(0, 1)
 	rotationdir = 1 if rand == 1 else -1
