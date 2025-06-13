@@ -1,6 +1,9 @@
 extends CharacterBody2D
 
 # INIT ==============
+# signals -------------
+signal Enemydeath
+
 # variables --------------
 var player_in_body = false
 var health : float
@@ -101,6 +104,7 @@ func damage(attack_damage, bullet):
 	play_hit_effect()
 	
 	if health <= 0:
+		Enemydeath.emit()
 		death()
 
 func regenerate_shield():

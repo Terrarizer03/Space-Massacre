@@ -20,6 +20,7 @@ patch_margin_right = 5
 patch_margin_bottom = 5
 
 [node name="Name" type="RichTextLabel" parent="NinePatchRect"]
+layout_mode = 0
 offset_left = 15.0
 offset_top = 8.0
 offset_right = 84.0
@@ -29,6 +30,7 @@ theme_override_font_sizes/normal_font_size = 25
 text = "Name"
 
 [node name="Chat" type="RichTextLabel" parent="NinePatchRect"]
+layout_mode = 0
 offset_left = 61.0
 offset_top = 44.0
 offset_right = 674.0

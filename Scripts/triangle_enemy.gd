@@ -2,6 +2,10 @@ extends CharacterBody2D
 
 # INIT
 # ===============================
+# signals -------------
+signal Enemydeath
+
+# Exports ------------
 @export var attackingdamage = 1
 @export var DAMAGING_COOLDOWN = 0.5
 @export var speed := 1000.0
@@ -58,8 +62,7 @@ func damage(attack_damage, bullet):
 	$HitEffect.play("HitEffect")
 	var main_scene = get_tree().get_first_node_in_group("MainScene")
 	if health <= 0:
-		if main_scene:
-			main_scene.points += 3
+		Enemydeath.emit()
 		spawnPowerUp()
 		death()
 

@@ -20,10 +20,12 @@ var current_text = ""
 var target_text = ""
 var char_index = 0
 var type_speed = 0.05  # Time between characters (lower = faster)
+var time = 0.0
 
 @onready var dialogue_sound = $DialogueSound
 @onready var name_label = $NinePatchRect/Name
 @onready var chat_label = $NinePatchRect/Chat
+@onready var s_continue = $NinePatchRect/PressSpaceToContinue
 @onready var type_timer = Timer.new()
 
 func _ready() -> void:
@@ -41,6 +43,10 @@ func _input(event):
 		else:
 			# Move to next dialogue
 			next_dialogue()
+
+func _process(delta: float) -> void:
+	time += delta
+	s_continue.self_modulate.a = (sin(time * 3.5) + 1.0) / 2.0
 
 func start_dialogue():
 	if dialogue.size() > 0:

@@ -22,13 +22,13 @@ shader_parameter/tint = Color(1, 1, 1, 1)
 [sub_resource type="CircleShape2D" id="CircleShape2D_vvx1a"]
 radius = 30.3645
 
-[sub_resource type="Animation" id="Animation_bvp38"]
-resource_name = "Shield_HitFlash"
+[sub_resource type="Animation" id="Animation_dsjhw"]
+resource_name = "RBody_HitFlash"
 length = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:material:shader_parameter/enabled")
+tracks/0/path = NodePath("Sprite2D/Sprite2D:material:shader_parameter/enabled")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -65,13 +65,13 @@ tracks/1/keys = {
 "values": [false]
 }
 
-[sub_resource type="Animation" id="Animation_dsjhw"]
-resource_name = "RBody_HitFlash"
+[sub_resource type="Animation" id="Animation_bvp38"]
+resource_name = "Shield_HitFlash"
 length = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D/Sprite2D:material:shader_parameter/enabled")
+tracks/0/path = NodePath("Sprite2D:material:shader_parameter/enabled")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {

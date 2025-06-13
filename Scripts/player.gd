@@ -4,6 +4,8 @@ extends CharacterBody2D
 # ==================
 # signals -------------
 signal healthChanged
+signal playerDeath
+signal cameraZoom
 
 # unresolved -------------
 var SPEED : float
@@ -22,6 +24,7 @@ var atk_speed_up = false
 var atk_up = false
 var bullet_scale = 1
 var iframes = false
+var is_alive = true
 var attackmult := 2
 var speedmult := 1.5
 var is_dashing = false
@@ -61,8 +64,12 @@ func _physics_process(delta: float) -> void:
 	elif not is_dashing:
 		velocity = velocity.lerp(Vector2.ZERO, friction)
 	
+	if is_alive:
+		look_at(get_global_mouse_position())
+	else:
+		return
+	
 	# SHOOTING AND INPUTS ----------
-	look_at(get_global_mouse_position())
 	if Input.is_action_pressed("attack"):
 		fire()
 	
@@ -104,8 +111,14 @@ func damage(attack_damage,pos):
 		$HitSound.play()
 		Iframes(0.5)
 		if health <= 0:
-			health = max_health
-			healthChanged.emit(health)
+			is_alive = false
+			cameraZoom.emit()
+			# Pause the game but allow player to animate
+			get_tree().paused = true
+			process_mode = Node.PROCESS_MODE_WHEN_PAUSED
+			$PlayerAnimations.play("PlayerDeath")
+			await $PlayerAnimations.animation_finished
+			playerDeath.emit()
 			
 func Iframes(time):
 	iframes = true
@@ -116,6 +129,9 @@ func Iframes(time):
 func create_dash_trail():
 	var ghost = Sprite2D.new()
 	ghost.texture = PlayerSprite.texture  
+	ghost.hframes = PlayerSprite.hframes  # Set the horizontal frames
+	ghost.vframes = PlayerSprite.vframes  # Set the vertical frames
+	ghost.frame = 0  # Use frame 0 (the first frame)
 	ghost.global_position = global_position  
 	ghost.global_rotation = global_rotation + deg_to_rad(90) 
 	ghost.scale = scale * 2.5

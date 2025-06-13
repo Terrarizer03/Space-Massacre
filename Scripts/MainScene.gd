@@ -1,10 +1,16 @@
 extends Node2D
 
 # INIT =============
+# signal ------------
+signal sendScore
+
 # variables -------------
 var wave = 0
+var score = 0
+var game_start = false
 var spawning = true
 var spawned_enemies = 0
+var player_death = null
 
 # preloads ------------
 var dialogue_scene = preload("res://Dialogue/dialogue.tscn")
@@ -14,11 +20,13 @@ var square_enemy = preload("res://Scenes/Enemies/SquareEnemy.tscn")
 
 # On Ready -------------
 @onready var wave_indicator = $CanvasLayer/WaveIndicator
+@onready var score_indicator = $"CanvasLayer/ScoreIndicator"
 @onready var heartcontainer = $CanvasLayer/HBoxContainer
 @onready var Player = $Player
 
 func _ready() -> void:
-	gameStart()
+	player_death = Player.playerDeath.connect(_end_game)
+	dialogueStart()
 
 func spawn_circle_enemy():
 	while true:
@@ -29,7 +37,9 @@ func spawn_circle_enemy():
 			var circle_instance = circle_enemy.instantiate()
 			circle_instance.position = spawnpos
 			add_child(circle_instance)
-			print("ENEMY SPAWNED ", circle_instance.position)
+			
+			circle_instance.Enemydeath.connect(func(): scoreChange(10))
+			
 			await get_tree().create_timer(1).timeout
 		else:
 			await get_tree().create_timer(0.1).timeout
@@ -43,7 +53,9 @@ func spawn_triangle_enemy():
 			var triangle_instance = triangle_enemy.instantiate()
 			triangle_instance.position = spawnpos
 			add_child(triangle_instance)
-			print("TRIANGLE ENEMY SPAWNED ", triangle_instance.position)
+			
+			triangle_instance.Enemydeath.connect(func(): scoreChange(15))
+			
 			await get_tree().create_timer(5).timeout  # Spawn triangles less frequently
 		else:
 			await get_tree().create_timer(0.1).timeout
@@ -57,7 +69,9 @@ func spawn_square_enemy():
 			var square_instance = square_enemy.instantiate()
 			square_instance.position = spawnpos
 			add_child(square_instance)
-			print("ENEMY SPAWNED ", square_instance.position)
+			
+			square_instance.Enemydeath.connect(func(): scoreChange(25))
+			
 			await get_tree().create_timer(20).timeout
 		else:
 			await get_tree().create_timer(0.1).timeout
@@ -70,6 +84,7 @@ func wave_function():
 	spawned_enemies = 0
 	
 	wave_indicator.text = "Wave " + str(wave)
+	score_indicator.text = "Score: " + str(score)
 	
 	# Spawn duration increases with wave number
 	var spawn_duration = 8 + (wave * 2)  # 10s, 12s, 14s, etc.
@@ -152,7 +167,7 @@ func determineSquareSpawnPos():
 	
 	return spawn_pos
 
-func gameStart():
+func dialogueStart():
 	# Instantiate and show dialogue
 	var dialogue_instance = dialogue_scene.instantiate()
 	add_child(dialogue_instance)
@@ -165,6 +180,7 @@ func gameStart():
 	await get_tree().create_timer(2).timeout
 	
 	# Now start the game
+	game_start = true
 	heartcontainer.setMaxHearts(Player.max_health)
 	heartcontainer.updateHearts(Player.health)
 	Player.healthChanged.connect(heartcontainer.updateHearts)
@@ -172,3 +188,11 @@ func gameStart():
 	spawn_circle_enemy()
 	spawn_triangle_enemy()
 	wave_function()
+
+func scoreChange(points: int):
+	score += points
+	if game_start:
+		score_indicator.text = "Score: " + str(score)
+
+func _end_game():
+	sendScore.emit(score)

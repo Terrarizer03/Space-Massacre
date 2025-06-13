@@ -1,8 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://cehac684mpxhw"]
+[gd_scene load_steps=14 format=3 uid="uid://cehac684mpxhw"]
 
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_evmrx"]
-[ext_resource type="Texture2D" uid="uid://dpop7toine34y" path="res://Assets/Sprites/Playersprite.png" id="1_k0xg1"]
 [ext_resource type="Shader" uid="uid://rf3tovogcso2" path="res://Shaders/TransparencyDown.tres" id="2_1f474"]
+[ext_resource type="Texture2D" uid="uid://2c2wyl0fn1e8" path="res://Assets/Sprites/PlayerDeathAnimation.png" id="3_42dqa"]
 [ext_resource type="AudioStream" uid="uid://ckrtl225vke6t" path="res://Assets/Sound/laserShoot (1).wav" id="3_p1ru0"]
 [ext_resource type="AudioStream" uid="uid://dnk5wlqke5drs" path="res://Assets/Sound/hitHurt (1).wav" id="4_56jkx"]
 [ext_resource type="AudioStream" uid="uid://c0w1ft4dterht" path="res://Assets/Sound/pickupCoin.wav" id="5_7n5jt"]
@@ -46,10 +46,39 @@ tracks/0/keys = {
 "update": 1,
 "values": [false]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_m3iuw"]
+resource_name = "PlayerDeath"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.5, 0.8, 1.1, 1.4, 1.5, 1.6, 1.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 3, 5, 7, 9, 10, 11, 12]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_xq60u"]
 _data = {
 "Hit": SubResource("Animation_3hfxt"),
+"PlayerDeath": SubResource("Animation_m3iuw"),
 "RESET": SubResource("Animation_b0toq")
 }
 
@@ -61,7 +90,9 @@ script = ExtResource("1_evmrx")
 material = SubResource("ShaderMaterial_273yt")
 rotation = 1.5708
 scale = Vector2(2.5, 2.5)
-texture = ExtResource("1_k0xg1")
+texture = ExtResource("3_42dqa")
+hframes = 4
+vframes = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_t04ej")

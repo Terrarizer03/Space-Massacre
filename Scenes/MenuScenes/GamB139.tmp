@@ -1,0 +1,43 @@
+[gd_scene load_steps=4 format=3 uid="uid://c7164h1g3sfup"]
+
+[ext_resource type="Script" path="res://Scripts/game_over.gd" id="1_g37j6"]
+[ext_resource type="FontFile" uid="uid://bqsnnjxx5gsot" path="res://Assets/Fonts/Tiny5/Tiny5-Regular.ttf" id="2_8mex8"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n27ar"]
+bg_color = Color(0.0728427, 0.0728426, 0.0728426, 1)
+
+[node name="GameOverPanel" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_g37j6")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_n27ar")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -81.0
+offset_top = -10.0
+offset_right = 81.0
+offset_bottom = 44.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/normal_font = ExtResource("2_8mex8")
+theme_override_font_sizes/normal_font_size = 25
+bbcode_enabled = true
+text = "[center]Game Over[/center]"
