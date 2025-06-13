@@ -113,6 +113,7 @@ func damage(attack_damage,pos):
 		if health <= 0:
 			is_alive = false
 			cameraZoom.emit()
+			await $PlayerAnimations.animation_finished
 			# Pause the game but allow player to animate
 			get_tree().paused = true
 			process_mode = Node.PROCESS_MODE_WHEN_PAUSED
@@ -123,7 +124,7 @@ func damage(attack_damage,pos):
 func Iframes(time):
 	iframes = true
 	$PlayerAnimations.play("Hit")
-	await get_tree().create_timer(0.5).timeout
+	await get_tree().create_timer(time).timeout
 	iframes = false
 
 func create_dash_trail():
