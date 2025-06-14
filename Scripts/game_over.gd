@@ -12,6 +12,7 @@ func _ready() -> void:
 	EndMessage.self_modulate.a = 0.0
 	visible_ui.modulate.a = 0.0
 	visible_ui.hide()
+	self.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	
 	# Check if Player node exists before connecting
 	if Player != null:
@@ -28,6 +29,7 @@ func _ready() -> void:
 func _on_game_over():
 	ending_message()
 	visible_ui.show()
+	self.mouse_filter = Control.MOUSE_FILTER_STOP
 	var tween = create_tween()
 	tween.tween_property(visible_ui, "modulate:a", 1.0, 1.0)
 	tween.set_trans(Tween.TRANS_SINE)

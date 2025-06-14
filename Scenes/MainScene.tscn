@@ -3546,7 +3546,7 @@ size_flags_horizontal = 8
 theme_override_fonts/font = ExtResource("5_0x3xc")
 theme_override_font_sizes/font_size = 20
 
-[node name="Panel" parent="CanvasLayer" instance=ExtResource("7_v68i3")]
+[node name="UpgradePanel" parent="CanvasLayer" instance=ExtResource("7_v68i3")]
 
 [node name="GameOverPanel" parent="CanvasLayer" instance=ExtResource("6_vropp")]
 

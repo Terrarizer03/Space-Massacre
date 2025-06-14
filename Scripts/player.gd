@@ -46,6 +46,7 @@ var dash_cooldown = 0.5
 @onready var screen_size = get_viewport_rect()
 @onready var cards
 @onready var PlayerSprite = $Sprite2D
+@onready var Upgrades = $CanvasLayer/UpgradePanel
 
 # ==================
 
@@ -226,3 +227,32 @@ func health_power_up():
 		health += 1
 		healthChanged.emit(health)
 # ================
+
+# UPGRADES ===============
+# UPGRADES ===============
+func _on_strength_upgrade():
+	# Increase player attack damage
+	NORM_ATTACK += 1
+	attack = NORM_ATTACK * (attackmult if atk_up else 1)
+	print("Strength increased! Attack damage is now: ", NORM_ATTACK)
+
+func _on_health_upgrade():
+	# Increase max health and current health
+	max_health += 1
+	health += 1
+	healthChanged.emit(health)
+	print("Health increased! Max health is now: ", max_health)
+
+func _on_speed_upgrade():
+	# Increase movement speed
+	MAX_SPEED += 50
+	SPEED = MAX_SPEED
+	print("Speed increased! Max speed is now: ", MAX_SPEED)
+
+func _on_attack_speed_upgrade():
+	# Decrease attack cooldown by 10% (making attacks faster)
+	ATTACK_SPEED *= 0.9
+	attack_cooldown = ATTACK_SPEED
+	print("Attack speed increased! Attack cooldown is now: ", ATTACK_SPEED)
+# ====================
+# ====================

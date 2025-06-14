@@ -4,6 +4,7 @@ extends Node2D
 # signal ------------
 signal sendScore
 signal cameraShake
+signal waveEnd
 
 # variables -------------
 var wave = 0
@@ -25,11 +26,24 @@ var square_enemy = preload("res://Scenes/Enemies/SquareEnemy.tscn")
 @onready var heartcontainer = $CanvasLayer/Control/HBoxContainer
 @onready var Player = $Player
 @onready var canvas = $CanvasLayer/Control
+@onready var UpgradePanel = $CanvasLayer/UpgradePanel
 
 func _ready() -> void:
 	canvas.modulate.a = 0.0
 	player_death = Player.playerDeath.connect(_end_game)
+
+	# Connect to the upgrade panel's card selection signal
+	UpgradePanel.cardSelected.connect(_on_upgrade_selected)
+
+	# Connect upgrade signals to player
+	UpgradePanel.strengthUpgrade.connect(Player._on_strength_upgrade)
+	UpgradePanel.healthUpgrade.connect(Player._on_health_upgrade)
+	UpgradePanel.speedUpgrade.connect(Player._on_speed_upgrade)
+	UpgradePanel.attackSpeedUpgrade.connect(Player._on_attack_speed_upgrade)
+
 	dialogueStart()
+	
+	Player.healthChanged.connect(_on_player_health_changed)
 
 func spawn_circle_enemy():
 	while true:
@@ -82,6 +96,7 @@ func spawn_square_enemy():
 func wave_function():
 	if wave >= 1:
 		$WaveEndSound.play()
+	
 	wave += 1
 	spawning = true
 	spawned_enemies = 0
@@ -96,17 +111,54 @@ func wave_function():
 	await get_tree().create_timer(spawn_duration).timeout
 	spawning = false
 	
+	# Wait for all enemies to be defeated
 	while get_tree().get_nodes_in_group("Enemy").size() > 0:
 		await get_tree().process_frame
 	
 	print("WAVE ", wave, " ENDED - Enemies spawned: ", spawned_enemies)
 	
-	# Break duration between waves
-	var break_duration = 5
-	await get_tree().create_timer(break_duration).timeout
+	# Check if this is an odd wave number (1, 3, 5, etc.) to show upgrade panel
+	if wave % 2 == 1:
+		# Show upgrade panel and fade in
+		UpgradePanel.show()
+		
+		# Fade in tween
+		var fade_in_tween = create_tween()
+		fade_in_tween.tween_property(UpgradePanel, "modulate:a", 1.0, 0.8)
+		fade_in_tween.set_trans(Tween.TRANS_SINE)
+		fade_in_tween.set_ease(Tween.EASE_IN_OUT)
+		
+		# Wait for fade in to complete, then spawn cards
+		await fade_in_tween.finished
+		UpgradePanel.spawnCards()
+		
+		# Wait for player to select an upgrade
+		await UpgradePanel.cardSelected
+		
+		# Fade out tween
+		var fade_out_tween = create_tween()
+		fade_out_tween.tween_property(UpgradePanel, "modulate:a", 0.0, 0.8)
+		fade_out_tween.set_trans(Tween.TRANS_SINE)
+		fade_out_tween.set_ease(Tween.EASE_IN_OUT)
+		
+		# Wait for fade out to complete, then hide
+		await fade_out_tween.finished
+		UpgradePanel.hide()
+		
+		# Small delay after upgrade selection
+		await get_tree().create_timer(1.0).timeout
+	else:
+		# Normal break duration between waves when no upgrade panel
+		var break_duration = 5
+		await get_tree().create_timer(break_duration).timeout
 	
 	# Start next wave
 	wave_function()
+
+func _on_upgrade_selected():
+	# This function is called when a card is selected
+	# You can add any additional logic here if needed
+	print("Upgrade selected for wave ", wave)
 
 func determineTriangleSpawnPos():
 	var screen_width = 1152
@@ -198,6 +250,17 @@ func dialogueStart():
 	spawn_triangle_enemy()
 	wave_function()
 
+func _on_player_health_changed(current_health: int):
+	# Check if we need to add more hearts (max health increased)
+	var current_heart_count = heartcontainer.get_children().size()
+	if Player.max_health > current_heart_count:
+		# Add the missing hearts
+		for i in range(current_heart_count, Player.max_health):
+			heartcontainer.addHeart()
+	
+	# Update the heart display
+	heartcontainer.updateHearts(current_health)
+
 func scoreChange(points: int):
 	cameraShake.emit()
 	score += points
@@ -206,3 +269,4 @@ func scoreChange(points: int):
 
 func _end_game():
 	sendScore.emit(score)
+	
