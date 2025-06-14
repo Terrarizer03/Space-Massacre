@@ -1,0 +1,42 @@
+[gd_scene load_steps=4 format=3 uid="uid://dew47t2vbqlm7"]
+
+[ext_resource type="Texture2D" uid="uid://dktob8e8nh5fk" path="res://Assets/Sprites/StatUpgrades2.png" id="1_1lc2w"]
+[ext_resource type="Script" path="res://Scripts/upgrade_cards.gd" id="1_60ddm"]
+[ext_resource type="FontFile" uid="uid://bqsnnjxx5gsot" path="res://Assets/Fonts/Tiny5/Tiny5-Regular.ttf" id="3_hlahp"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 568.0
+offset_top = 304.0
+offset_right = 608.0
+offset_bottom = 344.0
+script = ExtResource("1_60ddm")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(3.66667, 3.75)
+texture = ExtResource("1_1lc2w")
+hframes = 2
+vframes = 2
+frame = 1
+
+[node name="Description" type="RichTextLabel" parent="Sprite2D"]
+offset_left = -20.0
+offset_top = 1.0
+offset_right = 59.0
+offset_bottom = 50.0
+scale = Vector2(0.5, 0.5)
+theme_override_fonts/normal_font = ExtResource("3_hlahp")
+theme_override_font_sizes/normal_font_size = 8
+text = "Increases"
+
+[node name="Button" type="Button" parent="."]
+self_modulate = Color(1, 1, 1, 0)
+offset_left = -88.0
+offset_top = -120.0
+offset_right = 88.0
+offset_bottom = 120.0
+
+[connection signal="mouse_entered" from="Button" to="." method="_on_button_mouse_entered"]
+[connection signal="mouse_exited" from="Button" to="." method="_on_button_mouse_exited"]
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

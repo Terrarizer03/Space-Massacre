@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=3 uid="uid://cpuxeghdi4mjl"]
+
+[ext_resource type="Script" path="res://Scripts/upgrade_panel.gd" id="1_e3p8p"]
+
+[node name="Panel" type="Panel"]
+self_modulate = Color(1, 1, 1, 0.686275)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_e3p8p")
+
+[node name="SpawnPoint1" type="Node2D" parent="."]
+position = Vector2(576, 320)
+
+[node name="SpawnPoint2" type="Node2D" parent="."]
+position = Vector2(384, 320)
+
+[node name="SpawnPoint3" type="Node2D" parent="."]
+position = Vector2(768, 320)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(576, 323)

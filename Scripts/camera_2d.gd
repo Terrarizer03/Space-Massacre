@@ -10,7 +10,6 @@ extends Camera2D
 @export var zoom_duration: float = 1.1
 
 #variables ---------
-var max_shake: float = 5.0
 var shake_fade : float = 10.0
 var _shake_strength: float = 0.0
 
@@ -18,9 +17,10 @@ func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	if player and player.has_signal("cameraZoom"):
 		player.connect("cameraZoom", _on_camera_zoom)
-	main_scene.cameraShake.connect(camera_Shake)
+	main_scene.cameraShake.connect(func(): camera_Shake(5.0))
+	player.playerHit.connect(func(): camera_Shake(2.5))
 		
-func camera_Shake():
+func camera_Shake(max_shake):
 	_shake_strength = max_shake
 	
 func _process(delta: float) -> void:

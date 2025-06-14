@@ -20,12 +20,14 @@ var triangle_enemy = preload("res://Scenes/Enemies/TriangleEnemy.tscn")
 var square_enemy = preload("res://Scenes/Enemies/SquareEnemy.tscn")
 
 # On Ready -------------
-@onready var wave_indicator = $CanvasLayer/WaveIndicator
-@onready var score_indicator = $"CanvasLayer/ScoreIndicator"
-@onready var heartcontainer = $CanvasLayer/HBoxContainer
+@onready var wave_indicator = $CanvasLayer/Control/WaveIndicator
+@onready var score_indicator = $"CanvasLayer/Control/ScoreIndicator"
+@onready var heartcontainer = $CanvasLayer/Control/HBoxContainer
 @onready var Player = $Player
+@onready var canvas = $CanvasLayer/Control
 
 func _ready() -> void:
+	canvas.modulate.a = 0.0
 	player_death = Player.playerDeath.connect(_end_game)
 	dialogueStart()
 
@@ -185,6 +187,12 @@ func dialogueStart():
 	heartcontainer.setMaxHearts(Player.max_health)
 	heartcontainer.updateHearts(Player.health)
 	Player.healthChanged.connect(heartcontainer.updateHearts)
+	
+	var tween = create_tween()
+	tween.tween_property(canvas, "modulate:a", 1.0, 0.8)
+	tween.set_trans(Tween.TRANS_SINE)
+	tween.set_ease(Tween.EASE_IN_OUT)
+	
 	spawn_square_enemy()
 	spawn_circle_enemy()
 	spawn_triangle_enemy()

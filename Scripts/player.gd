@@ -6,6 +6,7 @@ extends CharacterBody2D
 signal healthChanged
 signal playerDeath
 signal cameraZoom
+signal playerHit
 
 # unresolved -------------
 var SPEED : float
@@ -43,6 +44,7 @@ var dash_cooldown = 0.5
 
 # On Ready -------------
 @onready var screen_size = get_viewport_rect()
+@onready var cards
 @onready var PlayerSprite = $Sprite2D
 
 # ==================
@@ -108,6 +110,7 @@ func damage(attack_damage,pos):
 		velocity = push_direction * SPEED * 2
 		health -= attack_damage
 		healthChanged.emit(health)
+		playerHit.emit()
 		$HitSound.play()
 		Iframes(0.5)
 		if health <= 0:
