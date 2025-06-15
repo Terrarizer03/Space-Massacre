@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://cpuxeghdi4mjl"]
+[gd_scene load_steps=3 format=3 uid="uid://cpuxeghdi4mjl"]
 
 [ext_resource type="Script" path="res://Scripts/upgrade_panel.gd" id="1_e3p8p"]
+[ext_resource type="FontFile" uid="uid://bqsnnjxx5gsot" path="res://Assets/Fonts/Tiny5/Tiny5-Regular.ttf" id="2_nstrx"]
 
 [node name="UpgradePanel" type="Panel"]
 self_modulate = Color(1, 1, 1, 0.929412)
@@ -20,5 +21,19 @@ position = Vector2(384, 320)
 [node name="SpawnPoint3" type="Node2D" parent="."]
 position = Vector2(768, 320)
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(576, 323)
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -207.5
+offset_right = 20.0
+offset_bottom = -184.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_nstrx")
+theme_override_font_sizes/font_size = 25
+text = "Stat Upgrades!"

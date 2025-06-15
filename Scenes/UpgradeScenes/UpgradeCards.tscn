@@ -32,6 +32,7 @@ text = "Increases"
 
 [node name="Button" type="Button" parent="."]
 self_modulate = Color(1, 1, 1, 0)
+layout_mode = 0
 offset_left = -88.0
 offset_top = -120.0
 offset_right = 88.0

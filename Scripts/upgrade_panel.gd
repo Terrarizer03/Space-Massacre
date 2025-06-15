@@ -9,9 +9,11 @@ signal attackSpeedUpgrade
 
 # preloads -----------
 var UpgradeCards = preload("res://Scenes/UpgradeScenes/UpgradeCards.tscn")
+var time = 0.0
 
 # OnReady references for better performance
 @onready var spawn_points = [$SpawnPoint1, $SpawnPoint2, $SpawnPoint3]
+@onready var upgrades_msg = $Label
 
 # Variables for card management
 var spawned_cards = []
@@ -20,6 +22,10 @@ var card_selected = false
 func _ready() -> void:
 	self.hide()
 	self.modulate.a = 0.0
+
+func _process(delta: float) -> void:
+	time += delta
+	upgrades_msg.self_modulate.a = (sin(time * 3.5) + 1.0) / 2.0
 
 func spawnCards():
 	# Clear any existing cards first

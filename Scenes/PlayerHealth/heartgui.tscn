@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://dc3a2lgl1hhnr"]
 
 [ext_resource type="Script" path="res://Scripts/heartgui.gd" id="1_y8gbq"]
-[ext_resource type="Texture2D" uid="uid://chqa7rr2mo0qu" path="res://Assets/Sprites/New Piskel (52).png" id="2_amjtw"]
+[ext_resource type="Texture2D" uid="uid://57dgqo0sb2dx" path="res://Assets/Sprites/New Piskel (53) (1).png" id="2_2sjrx"]
 
 [node name="Panel" type="Panel"]
 self_modulate = Color(1, 1, 1, 0)
@@ -12,7 +12,6 @@ script = ExtResource("1_y8gbq")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(16, 13)
-texture = ExtResource("2_amjtw")
-hframes = 2
+texture = ExtResource("2_2sjrx")
 vframes = 2
 frame = 1
