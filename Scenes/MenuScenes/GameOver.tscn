@@ -32,9 +32,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -114.0
-offset_top = -47.0
+offset_top = -94.0
 offset_right = 114.0
-offset_bottom = 7.0
+offset_bottom = -40.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/normal_font = ExtResource("2_8mex8")
@@ -50,15 +50,15 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -152.0
-offset_top = 1.0
+offset_top = -46.0
 offset_right = 152.0
-offset_bottom = 27.0
+offset_bottom = -20.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/normal_font = ExtResource("2_8mex8")
 theme_override_font_sizes/normal_font_size = 15
 bbcode_enabled = true
-text = "[center]Final Score: 250[/center]"
+text = "[center]Final Score: 0[/center]"
 
 [node name="EndMessage" type="RichTextLabel" parent="Panel"]
 layout_mode = 1
@@ -68,11 +68,44 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -460.0
-offset_top = 42.0
+offset_top = -5.0
 offset_right = 460.0
-offset_bottom = 114.0
+offset_bottom = 49.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/normal_font = ExtResource("2_8mex8")
 theme_override_font_sizes/normal_font_size = 20
 bbcode_enabled = true
+
+[node name="Restart" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 408.0
+offset_top = 385.0
+offset_right = 552.0
+offset_bottom = 450.0
+focus_mode = 0
+theme_override_fonts/font = ExtResource("2_8mex8")
+text = "Restart"
+
+[node name="Main Menu" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 600.0
+offset_top = 385.0
+offset_right = 744.0
+offset_bottom = 450.0
+focus_mode = 0
+theme_override_fonts/font = ExtResource("2_8mex8")
+text = "Main Menu"
+
+[node name="FadeOut" type="ColorRect" parent="Panel"]
+process_mode = 3
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[connection signal="button_down" from="Panel/Restart" to="." method="_on_restart_button_down"]

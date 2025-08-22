@@ -1,10 +1,14 @@
 extends Control
 
+# Signals
+signal resetRequested
+
 # Node references
 @onready var main_scene = $"../../"
 @onready var visible_ui = $Panel
 @onready var Player = $"../../Player"
 @onready var EndMessage = $Panel/EndMessage
+@onready var FadeOutOverlay = $Panel/FadeOut
 
 func _ready() -> void:
 	# Allow this UI to process even when game is paused
@@ -13,6 +17,8 @@ func _ready() -> void:
 	visible_ui.modulate.a = 0.0
 	visible_ui.hide()
 	self.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	
+	FadeOutOverlay.self_modulate.a = 0.0
 	
 	# Check if Player node exists before connecting
 	if Player != null:
@@ -56,5 +62,13 @@ func ending_message():
 	tween.set_trans(Tween.TRANS_SINE)
 	tween.set_ease(Tween.EASE_IN_OUT)
 	
+
+func _on_restart_button_down() -> void:
+	var tween = create_tween()
+	tween.tween_property(FadeOutOverlay, "self_modulate:a", 1.0, 2.5)
+	tween.set_trans(Tween.TRANS_SINE)
+	tween.set_ease(Tween.EASE_IN_OUT)
 	
+	await get_tree().create_timer(3.0).timeout
 	
+	resetRequested.emit()

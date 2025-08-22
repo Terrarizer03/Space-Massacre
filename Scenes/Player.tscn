@@ -102,10 +102,11 @@ position = Vector2(270, 0)
 
 [node name="LaserShoot" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_p1ru0")
-volume_db = -10.0
+volume_db = -15.0
 
 [node name="HitSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_56jkx")
+volume_db = -5.0
 
 [node name="PickupCoin" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_7n5jt")

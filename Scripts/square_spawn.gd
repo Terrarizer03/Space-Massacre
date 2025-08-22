@@ -88,6 +88,7 @@ func death():
 func explosion_noise():
 	var sound_player = AudioStreamPlayer.new()
 	sound_player.stream = explosion
+	sound_player.volume_db = -7.5
 	get_parent().add_child(sound_player)
 	sound_player.play()
 	queue_free()

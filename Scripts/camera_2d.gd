@@ -43,3 +43,9 @@ func _on_camera_zoom():
 	# Add easing
 	tween.set_ease(Tween.EASE_IN)
 	tween.set_trans(Tween.TRANS_CUBIC)
+	
+	# Fade out music over 2 seconds
+	var fade_tween = MusicManager.fade_out_music(7.5)
+	await fade_tween.finished
+	
+	MusicManager.stop_music()

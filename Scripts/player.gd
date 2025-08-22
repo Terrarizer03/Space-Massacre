@@ -46,16 +46,17 @@ var dash_cooldown = 0.5
 @onready var screen_size = get_viewport_rect()
 @onready var cards
 @onready var PlayerSprite = $Sprite2D
-@onready var Upgrades = $CanvasLayer/UpgradePanel
-
 # ==================
 
 func _ready() -> void:
+	if has_node("CanvasLayer/UpgradePanel"):
+		var upgrade_panel = get_node("CanvasLayer/UpgradePanel")
+		
 	SPEED = MAX_SPEED
 	attack = NORM_ATTACK
 	attack_cooldown = ATTACK_SPEED
 	health = max_health
-	
+
 func _physics_process(delta: float) -> void:
 	screen_wrap()
 	# MOVEMENT ----------
