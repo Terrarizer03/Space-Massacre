@@ -12,7 +12,7 @@ An endless wave shooter with roguelike elements. Built in Godot during my first 
 
 **Main Menu:**
 
-![Main Menu](Assets/Screenshots/Godot%20Engine%20Screenshot%202025.08.23%20-%2016.58.11.35.png)
+![Main Menu](Assets/Screenshots/Godot%20Engine%20Screenshot%202025.08.23%20-%2017.10.26.37.png)
 
 **Opening Dialogue:**
 
