@@ -43,9 +43,20 @@ An endless wave shooter with roguelike elements. Built in Godot during my first 
 - Shoot: [Left Click]
 
 # Authors
+
 **Leading Developer:** Terrarizer - STEM Student & Developer
 
 **Developer:** Cobalt - Aspiring 9 to 5 worker (He legit wanted me to put this down 💀)
+
+**Credits:**
+- **Programming:** Terrarizer 
+- **Game Design:** Cobalt
+- **Art & Visual Assets:** Terrarizer & Cobalt  
+- **Sound Effects:** Terrarizer & Cobalt
+- **Music:**  
+  - *boss_battle #2.WAV* – by nene (Public Domain)  
+  - *Boss Battle 6 V1.wav* – by nene (Public Domain)  
+  - *MyVeryOwnDeadShip.ogg* – by yd (Public Domain)  
 
 # Contact
 - Socials: [GitHub](https://github.com/Terrarizer03) • [X/Twitter](https://x.com/Terrarizer_) • [Ko-fi](https://ko-fi.com/terrarizer) • [YouTube](https://www.youtube.com/@terrarizer3) • [Twitch](https://www.twitch.tv/terrarizer_)
