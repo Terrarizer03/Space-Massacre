@@ -3,9 +3,9 @@ extends Node
 
 @onready var music_player = $AudioStreamPlayer2D
 
-func play_music(stream = null):
+func play_music(volume, stream = null):
 	music_player.stream = stream
-	music_player.volume_db = 0
+	music_player.volume_db = volume
 	music_player.play()
 
 func fade_out_music(duration = 5.0):

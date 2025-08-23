@@ -2,6 +2,7 @@ extends Control
 
 # Signals
 signal resetRequested
+signal endMusic
 
 # Node references
 @onready var main_scene = $"../../"
@@ -61,14 +62,26 @@ func ending_message():
 	tween.tween_property(EndMessage, "self_modulate:a", 1.0, 1.0)
 	tween.set_trans(Tween.TRANS_SINE)
 	tween.set_ease(Tween.EASE_IN_OUT)
-	
 
-func _on_restart_button_down() -> void:
+func fade_out() -> void:
 	var tween = create_tween()
 	tween.tween_property(FadeOutOverlay, "self_modulate:a", 1.0, 2.5)
 	tween.set_trans(Tween.TRANS_SINE)
 	tween.set_ease(Tween.EASE_IN_OUT)
+
+func _on_restart_button_down() -> void:
+	fade_out() # Fade out the screen before running
+	endMusic.emit()
 	
 	await get_tree().create_timer(3.0).timeout
 	
 	resetRequested.emit()
+	
+
+func _on_main_menu_button_down() -> void:
+	fade_out() # Fade out the screen before running
+	endMusic.emit()
+	
+	await get_tree().create_timer(3.0).timeout
+	
+	get_tree().change_scene_to_file("res://Scenes/MenuScenes/MainMenu.tscn")

@@ -4,6 +4,7 @@ extends Node2D
 signal sendScore
 signal cameraShake
 signal waveEnd
+signal endDeathMusic
 
 # VARIABLES
 var wave = 0
@@ -59,6 +60,7 @@ func _start_game():
 	Player.playerDeath.connect(_end_game)
 	UpgradePanel.cardSelected.connect(_on_upgrade_selected)
 	GameOverPanel.resetRequested.connect(_on_game_restart)
+	GameOverPanel.endMusic.connect(_end_death_music)
 	
 	UpgradePanel.strengthUpgrade.connect(Player._on_strength_upgrade)
 	UpgradePanel.healthUpgrade.connect(Player._on_health_upgrade)
@@ -69,6 +71,9 @@ func _start_game():
 
 	print("Starting dialogue...")
 	dialogueStart()
+
+func _end_death_music() -> void:
+	endDeathMusic.emit()
 
 func dialogueStart():
 	print("dialogueStart called")
@@ -98,7 +103,7 @@ func _finish_dialogue_setup():
 	print("Finishing dialogue setup...")
 	game_start = true
 	
-	MusicManager.play_music(background_music)
+	MusicManager.play_music(0, background_music)
 	
 	# Setup hearts
 	if heartcontainer and Player:
@@ -240,10 +245,7 @@ func wave_function() -> void:
 # -----------------------
 func _on_game_restart():
 	print("Game restart requested")
-	game_running = false
-	spawning = false
 	
-	# Small delay before reload
 	await get_tree().create_timer(0.1).timeout
 	get_tree().reload_current_scene()
 
@@ -305,4 +307,7 @@ func scoreChange(points: int):
 		score_indicator.text = "Score: " + str(score)
 
 func _end_game():
+	game_running = false
+	spawning = false
+	
 	sendScore.emit(score)

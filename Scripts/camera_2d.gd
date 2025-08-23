@@ -1,6 +1,9 @@
 extends Camera2D
 
 # INIT =============
+# Preloads ------------
+var deathSound = preload("res://Assets/Sound/DeathMusic.ogg")
+
 # On Ready ------------
 @onready var player = $"../Player"
 @onready var main_scene = $"../../Node2D"
@@ -14,6 +17,8 @@ var shake_fade : float = 10.0
 var _shake_strength: float = 0.0
 
 func _ready():
+	main_scene.endDeathMusic.connect(_end_death_music)
+	
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	if player and player.has_signal("cameraZoom"):
 		player.connect("cameraZoom", _on_camera_zoom)
@@ -45,7 +50,15 @@ func _on_camera_zoom():
 	tween.set_trans(Tween.TRANS_CUBIC)
 	
 	# Fade out music over 2 seconds
-	var fade_tween = MusicManager.fade_out_music(7.5)
+	var fade_tween = MusicManager.fade_out_music(2.5)
+	await fade_tween.finished
+	
+	MusicManager.stop_music()
+	
+	MusicManager.play_music(0, deathSound)
+	
+func _end_death_music():
+	var fade_tween = MusicManager.fade_out_music(2.5)
 	await fade_tween.finished
 	
 	MusicManager.stop_music()

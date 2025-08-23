@@ -1,10 +1,56 @@
-[gd_scene load_steps=4 format=3 uid="uid://c7164h1g3sfup"]
+[gd_scene load_steps=10 format=3 uid="uid://c7164h1g3sfup"]
 
 [ext_resource type="Script" path="res://Scripts/game_over.gd" id="1_g37j6"]
 [ext_resource type="FontFile" uid="uid://bqsnnjxx5gsot" path="res://Assets/Fonts/Tiny5/Tiny5-Regular.ttf" id="2_8mex8"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n27ar"]
 bg_color = Color(0.0728427, 0.0728426, 0.0728426, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hhmd7"]
+bg_color = Color(0.364706, 0.364706, 0.364706, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mdih2"]
+bg_color = Color(0.109804, 0.109804, 0.109804, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.423529, 0.423529, 0.423529, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vd8ej"]
+bg_color = Color(0.0823529, 0.0823529, 0.0862745, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.490196, 0.458824, 0.439216, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0b21n"]
+bg_color = Color(0.364706, 0.364706, 0.364706, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mfy7u"]
+bg_color = Color(0.109804, 0.109804, 0.109804, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.423529, 0.423529, 0.423529, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vcakh"]
+bg_color = Color(0.0823529, 0.0823529, 0.0862745, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.490196, 0.458824, 0.439216, 1)
 
 [node name="GameOverPanel" type="Control"]
 layout_mode = 3
@@ -85,6 +131,9 @@ offset_right = 552.0
 offset_bottom = 450.0
 focus_mode = 0
 theme_override_fonts/font = ExtResource("2_8mex8")
+theme_override_styles/hover = SubResource("StyleBoxFlat_hhmd7")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_mdih2")
+theme_override_styles/normal = SubResource("StyleBoxFlat_vd8ej")
 text = "Restart"
 
 [node name="Main Menu" type="Button" parent="Panel"]
@@ -95,6 +144,9 @@ offset_right = 744.0
 offset_bottom = 450.0
 focus_mode = 0
 theme_override_fonts/font = ExtResource("2_8mex8")
+theme_override_styles/hover = SubResource("StyleBoxFlat_0b21n")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_mfy7u")
+theme_override_styles/normal = SubResource("StyleBoxFlat_vcakh")
 text = "Main Menu"
 
 [node name="FadeOut" type="ColorRect" parent="Panel"]
@@ -109,3 +161,4 @@ mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
 [connection signal="button_down" from="Panel/Restart" to="." method="_on_restart_button_down"]
+[connection signal="button_down" from="Panel/Main Menu" to="." method="_on_main_menu_button_down"]

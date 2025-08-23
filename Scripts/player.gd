@@ -252,7 +252,7 @@ func _on_speed_upgrade():
 
 func _on_attack_speed_upgrade():
 	# Decrease attack cooldown by 10% (making attacks faster)
-	ATTACK_SPEED *= 0.9
+	ATTACK_SPEED *= 0.95
 	attack_cooldown = ATTACK_SPEED
 	print("Attack speed increased! Attack cooldown is now: ", ATTACK_SPEED)
 # ====================

@@ -1,0 +1,250 @@
+[gd_scene load_steps=14 format=3 uid="uid://u00uolnpq20s"]
+
+[ext_resource type="FontFile" uid="uid://bqsnnjxx5gsot" path="res://Assets/Fonts/Tiny5/Tiny5-Regular.ttf" id="1_1te6v"]
+[ext_resource type="Script" path="res://Scripts/main_menu.gd" id="1_twokf"]
+
+[sub_resource type="Shader" id="Shader_bsexv"]
+code = "shader_type canvas_item;
+
+// Shader parameters you can adjust in the editor
+uniform float star_density = 1.0;
+uniform float star_brightness = 1.0;
+uniform float twinkle_speed = 1.5;
+uniform float star_size = 1.0;
+uniform vec3 star_color = vec3(1.0, 1.0, 1.0);
+uniform vec3 background_color = vec3(0.0, 0.0, 0.0);
+
+// Random function - creates pseudo-random numbers from a 2D coordinate
+float random(vec2 st) {
+    return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453123);
+}
+
+// Generate star field
+float stars(vec2 uv, float density) {
+    // Scale UV coordinates to create a grid
+    vec2 grid = uv * 50.0 * density;
+    vec2 grid_id = floor(grid);
+    vec2 grid_uv = fract(grid);
+    
+    float star = 0.0;
+    
+    // Check 9 neighboring cells for stars (current + 8 neighbors)
+    for(int x = -1; x <= 1; x++) {
+        for(int y = -1; y <= 1; y++) {
+            vec2 neighbor = vec2(float(x), float(y));
+            vec2 cell_id = grid_id + neighbor;
+            
+            // Random chance for a star to exist in this cell
+            float star_chance = random(cell_id);
+            if(star_chance < 0.1) { // 10% chance for a star
+                // Random position within the cell
+                vec2 star_pos = neighbor + vec2(
+                    random(cell_id + vec2(1.0, 0.0)),
+                    random(cell_id + vec2(0.0, 1.0))
+                );
+                
+                // Distance from current pixel to star
+                float dist = length(grid_uv - star_pos);
+                
+                // Create star with size falloff
+                float star_intensity = 1.0 - smoothstep(0.0, 0.1 * star_size, dist);
+                star_intensity = pow(star_intensity, 2.0);
+                
+                // Add twinkling effect with unique timing for each star
+                float star_seed = random(cell_id + vec2(42.0, 73.0));
+                float star_speed = twinkle_speed * (0.5 + star_seed * 1.5); // Vary speed per star
+                float star_phase = random(cell_id + vec2(123.0, 456.0)) * 6.28318; // Random phase offset
+                
+                float twinkle = sin(TIME * star_speed + star_phase) * 0.5 + 0.5;
+                twinkle = smoothstep(0.2, 1.0, twinkle); // Make twinkling more pronounced
+                
+                star += star_intensity * twinkle;
+            }
+        }
+    }
+    
+    return clamp(star, 0.0, 1.0);
+}
+
+void fragment() {
+    vec2 uv = UV;
+    
+    // Generate star field
+    float star_field = stars(uv, star_density);
+    
+    // Mix background color with stars
+    vec3 final_color = mix(background_color, star_color, star_field * star_brightness);
+    
+    COLOR = vec4(final_color, 1.0);
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vkx3y"]
+shader = SubResource("Shader_bsexv")
+shader_parameter/star_density = 1.0
+shader_parameter/star_brightness = 1.0
+shader_parameter/twinkle_speed = 1.5
+shader_parameter/star_size = 1.0
+shader_parameter/star_color = Vector3(1, 1, 1)
+shader_parameter/background_color = Vector3(0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lbkq4"]
+bg_color = Color(0.362829, 0.362829, 0.362829, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.8, 0.8, 0.8, 0.8)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xaiby"]
+bg_color = Color(0.109804, 0.109804, 0.109804, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.423529, 0.423529, 0.423529, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ln5yg"]
+bg_color = Color(0.0823529, 0.0823529, 0.0862745, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.491136, 0.459698, 0.439971, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i2eoe"]
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cpddp"]
+bg_color = Color(0.109804, 0.109804, 0.109804, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.423529, 0.423529, 0.423529, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aa5ow"]
+bg_color = Color(0.0823529, 0.0823529, 0.0862745, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.490196, 0.458824, 0.439216, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8ngyq"]
+bg_color = Color(0.364706, 0.364706, 0.364706, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_scwqw"]
+bg_color = Color(0.111197, 0.111197, 0.111197, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.423651, 0.423651, 0.42365, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hlie2"]
+bg_color = Color(0.0823529, 0.0823529, 0.0862745, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.490196, 0.458824, 0.439216, 1)
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_twokf")
+
+[node name="Background" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_vkx3y")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SpaceMassacre" type="RichTextLabel" parent="Panel"]
+layout_mode = 0
+offset_left = 128.0
+offset_top = 184.0
+offset_right = 1088.0
+offset_bottom = 336.0
+theme_override_fonts/normal_font = ExtResource("1_1te6v")
+theme_override_font_sizes/normal_font_size = 100
+bbcode_enabled = true
+text = "[center]Space Massacre[/center]"
+
+[node name="Play" type="Button" parent="Panel"]
+layout_mode = 1
+offset_left = 432.0
+offset_top = 328.0
+offset_right = 720.0
+offset_bottom = 376.0
+focus_mode = 0
+theme_override_fonts/font = ExtResource("1_1te6v")
+theme_override_styles/hover = SubResource("StyleBoxFlat_lbkq4")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_xaiby")
+theme_override_styles/normal = SubResource("StyleBoxFlat_ln5yg")
+text = "Play"
+
+[node name="Settings" type="Button" parent="Panel"]
+layout_mode = 1
+offset_left = 416.0
+offset_top = 392.0
+offset_right = 736.0
+offset_bottom = 440.0
+focus_mode = 0
+theme_override_fonts/font = ExtResource("1_1te6v")
+theme_override_styles/hover = SubResource("StyleBoxFlat_i2eoe")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_cpddp")
+theme_override_styles/normal = SubResource("StyleBoxFlat_aa5ow")
+text = "Settings"
+
+[node name="Credits" type="Button" parent="Panel"]
+layout_mode = 1
+offset_left = 432.0
+offset_top = 456.0
+offset_right = 720.0
+offset_bottom = 504.0
+focus_mode = 0
+theme_override_fonts/font = ExtResource("1_1te6v")
+theme_override_styles/hover = SubResource("StyleBoxFlat_8ngyq")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_scwqw")
+theme_override_styles/normal = SubResource("StyleBoxFlat_hlie2")
+text = "Credits"
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+
+[node name="FadeIn" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[connection signal="button_down" from="Panel/Play" to="." method="_on_play_button_down"]
+[connection signal="button_down" from="Panel/Settings" to="." method="_on_settings_button_down"]
+[connection signal="button_down" from="Panel/Credits" to="." method="_on_credits_button_down"]
