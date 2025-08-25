@@ -1,12 +1,16 @@
 extends Control
 
 var menuMusic = preload("res://Assets/Sound/Boss Battle 6 V1.wav")
+var hoverSound = preload("res://Assets/Sound/hover sound.wav")
 
 @onready var TitleCard = $MainButtons/SpaceMassacre
 @onready var FadeIn = $CanvasLayer/FadeIn
 @onready var Credits = $Credits
 
+var isFading = false
+
 func _ready() -> void:
+	isFading = false
 	get_tree().paused = false
 	
 	MusicManager.play_music(-5, menuMusic)
@@ -18,6 +22,7 @@ func _ready() -> void:
 func _on_play_button_down() -> void:
 	fade_in(2.0)
 	MusicManager.fade_out_music(2.0)
+	isFading = true
 	await get_tree().create_timer(2.15).timeout
 	MusicManager.stop_music()
 	await get_tree().create_timer(0.1).timeout
@@ -35,6 +40,7 @@ func _on_credits_button_down() -> void:
 func _on_exit_button_down() -> void:
 	fade_in(2.0)
 	MusicManager.fade_out_music(2.0)
+	isFading = true
 	await get_tree().create_timer(2.15).timeout
 	MusicManager.stop_music()
 	await get_tree().create_timer(0.1).timeout
@@ -48,3 +54,40 @@ func fade_in(duration) -> void:
 	fade_tween.tween_property(FadeIn, "self_modulate:a", 1.0, duration)
 	fade_tween.set_trans(Tween.TRANS_BACK)
 	fade_tween.set_ease(Tween.EASE_IN)
+
+
+func _on_play_mouse_entered() -> void:
+	if not isFading:
+		var stream = AudioStreamPlayer.new()
+		stream.stream = hoverSound
+		get_parent().add_child(stream)
+		stream.play()
+	else:
+		return
+
+func _on_credits_mouse_entered() -> void:
+	if not isFading:
+		var stream = AudioStreamPlayer.new()
+		stream.stream = hoverSound
+		get_parent().add_child(stream)
+		stream.play()
+	else:
+		return
+
+func _on_exit_mouse_entered() -> void:
+	if not isFading:
+		var stream = AudioStreamPlayer.new()
+		stream.stream = hoverSound
+		get_parent().add_child(stream)
+		stream.play()
+	else:
+		return
+
+func _on_back_mouse_entered() -> void:
+	if not isFading:
+		var stream = AudioStreamPlayer.new()
+		stream.stream = hoverSound
+		get_parent().add_child(stream)
+		stream.play()
+	else:
+		return

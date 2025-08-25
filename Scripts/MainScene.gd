@@ -22,6 +22,7 @@ var square_enemy = preload("res://Scenes/Enemies/SquareEnemy.tscn")
 var background_music = preload("res://Assets/Sound/boss_battle_#2.WAV")
 
 # ON READY
+@onready var escape_panel = $Control/EscapePanel
 @onready var wave_indicator = $CanvasLayer/Control/WaveIndicator
 @onready var score_indicator = $"CanvasLayer/Control/ScoreIndicator"
 @onready var heartcontainer = $CanvasLayer/Control/HBoxContainer
@@ -139,6 +140,7 @@ func spawn_circle_enemy() -> void:
 			spawned_enemies += 1
 			var circle_instance = circle_enemy.instantiate()
 			circle_instance.position = determineSpawnPos()
+			circle_instance.MAX_HEALTH = floor(circle_instance.MAX_HEALTH + (wave / 4)) 
 			add_child(circle_instance)
 			circle_instance.Enemydeath.connect(func(): scoreChange(10))
 			await get_tree().create_timer(1).timeout
@@ -151,6 +153,7 @@ func spawn_triangle_enemy() -> void:
 			spawned_enemies += 1
 			var triangle_instance = triangle_enemy.instantiate()
 			triangle_instance.position = determineTriangleSpawnPos()
+			triangle_instance.MAX_HEALTH = floor(triangle_instance.MAX_HEALTH + (wave / 4))
 			add_child(triangle_instance)
 			triangle_instance.Enemydeath.connect(func(): scoreChange(15))
 			await get_tree().create_timer(5).timeout
@@ -163,6 +166,7 @@ func spawn_square_enemy() -> void:
 			spawned_enemies += 1
 			var square_instance = square_enemy.instantiate()
 			square_instance.position = determineSquareSpawnPos()
+			square_instance.MAX_HEALTH = floor(square_instance.MAX_HEALTH + (wave / 6))
 			add_child(square_instance)
 			square_instance.Enemydeath.connect(func(): scoreChange(25))
 			await get_tree().create_timer(20).timeout

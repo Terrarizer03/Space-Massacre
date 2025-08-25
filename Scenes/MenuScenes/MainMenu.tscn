@@ -339,7 +339,6 @@ text = "Back"
 
 [node name="FadeIn" type="ColorRect" parent="CanvasLayer"]
 process_mode = 3
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -349,6 +348,10 @@ mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
 [connection signal="button_down" from="MainButtons/Play" to="." method="_on_play_button_down"]
+[connection signal="mouse_entered" from="MainButtons/Play" to="." method="_on_play_mouse_entered"]
 [connection signal="button_down" from="MainButtons/Credits" to="." method="_on_credits_button_down"]
+[connection signal="mouse_entered" from="MainButtons/Credits" to="." method="_on_credits_mouse_entered"]
 [connection signal="button_down" from="MainButtons/Exit" to="." method="_on_exit_button_down"]
+[connection signal="mouse_entered" from="MainButtons/Exit" to="." method="_on_exit_mouse_entered"]
 [connection signal="button_down" from="Credits/Back" to="." method="_on_back_button_down"]
+[connection signal="mouse_entered" from="Credits/Back" to="." method="_on_back_mouse_entered"]

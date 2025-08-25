@@ -161,4 +161,6 @@ mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
 [connection signal="button_down" from="Panel/Restart" to="." method="_on_restart_button_down"]
+[connection signal="mouse_entered" from="Panel/Restart" to="." method="_on_restart_mouse_entered"]
 [connection signal="button_down" from="Panel/Main Menu" to="." method="_on_main_menu_button_down"]
+[connection signal="mouse_entered" from="Panel/Main Menu" to="." method="_on_main_menu_mouse_entered"]

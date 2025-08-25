@@ -4,6 +4,9 @@ extends Control
 signal resetRequested
 signal endMusic
 
+# Preloads
+var hoverSound = preload("res://Assets/Sound/hover sound.wav")
+
 # Node references
 @onready var main_scene = $"../../"
 @onready var visible_ui = $Panel
@@ -11,7 +14,10 @@ signal endMusic
 @onready var EndMessage = $Panel/EndMessage
 @onready var FadeOutOverlay = $Panel/FadeOut
 
+var isFading = false
+
 func _ready() -> void:
+	isFading = false
 	# Allow this UI to process even when game is paused
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	EndMessage.self_modulate.a = 0.0
@@ -72,6 +78,7 @@ func fade_out() -> void:
 func _on_restart_button_down() -> void:
 	fade_out() # Fade out the screen before running
 	endMusic.emit()
+	isFading = true
 	
 	await get_tree().create_timer(3.0).timeout
 	
@@ -81,7 +88,27 @@ func _on_restart_button_down() -> void:
 func _on_main_menu_button_down() -> void:
 	fade_out() # Fade out the screen before running
 	endMusic.emit()
+	isFading = true
 	
 	await get_tree().create_timer(3.0).timeout
 	
 	get_tree().change_scene_to_file("res://Scenes/MenuScenes/MainMenu.tscn")
+
+
+func _on_restart_mouse_entered() -> void:
+	if not isFading:
+		var stream = AudioStreamPlayer.new()
+		stream.stream = hoverSound
+		get_parent().add_child(stream)
+		stream.play()
+	else:
+		return
+
+func _on_main_menu_mouse_entered() -> void:
+	if not isFading:
+		var stream = AudioStreamPlayer.new()
+		stream.stream = hoverSound
+		get_parent().add_child(stream)
+		stream.play()
+	else:
+		return

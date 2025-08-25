@@ -9,6 +9,7 @@ signal Enemydeath
 @export var attackingdamage = 1
 @export var DAMAGING_COOLDOWN = 0.5
 @export var speed := 1000.0
+@export var MAX_HEALTH = 1.25
 
 @onready var player = $"../Player"
 @onready var tween = get_tree().create_tween()
@@ -32,7 +33,8 @@ var damaging_cooldown = 0
 # ===============================
 
 func _ready() -> void:
-	health = randi_range(2, 3)
+	var rand = randi_range(1.5, 3)
+	health = floor(MAX_HEALTH * 1.5 * rand)
 	bullet_amount = MAX_BULLETS
 	scale = Vector2(0.1, 0.1)
 	tween.tween_property(self, "scale", final_scale, 1.0).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
